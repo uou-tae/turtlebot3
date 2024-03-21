@@ -21,9 +21,7 @@ def status_callback(msg):
             goal=goal + 1
             work=0
             print(f"goal: {goal}")
-
-            if (goal % 20) == 0 :
-                playsound(audio1)
+            playsound(audio1)
 
         if status.status == 1 :
             print("working")
@@ -31,18 +29,16 @@ def status_callback(msg):
             goal=0
             work=work + 1
             print(f"work: {work}")
-            if (work % 20 ) == 0:
-                playsound(audio)
+            playsound(audio)
             break  # 하나만 출력하고 종료
 
-def status_subscriber():
-    rospy.init_node('status_subscriber', anonymous=True)
+def status_subscriber(event):
     rospy.Subscriber("/move_base/status", GoalStatusArray, status_callback)
-    while not rospy.is_shutdown():
-        rospy.spin()
 
 if __name__ == '__main__':
     try:
-        rospy.timer(rospy.Duration(3),status_subscriber)
+        rospy.init_node('ros_timer')
+        rospy.Timer(rospy.Duration(3), status_subscriber)
+        rospy.spin()
     except rospy.ROSInterruptException:
         pass
