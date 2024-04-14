@@ -6,6 +6,7 @@ from actionlib_msgs.msg import GoalStatusArray
 # 초기 로봇의 위치를 저장하는 변수
 initial_pose = None
 work = 0
+gohome = 0
 def move_turtlebot3_to_goal(x, y):
     # 목표 위치를 설정한 PoseStamped 메시지 생성
     goal_pose = PoseStamped()
@@ -18,19 +19,13 @@ def move_turtlebot3_to_goal(x, y):
     goal_publisher.publish(goal_pose)
     rospy.loginfo("Published goal pose: {}".format(goal_pose))
 
-def odom_callback(msg):
-    # 로봇의 초기 위치를 콜백 함수에서 설정
-    global initial_pose
-    if initial_pose is None:
-        initial_pose = msg.pose.pose
-
 def status_callback(msg):
-    global goal, work
+    global work , gohome
     for status in msg.status_list:
         if status.status == 3:  # status가 3인 경우  goal reachead 인상태
-            work = work + 1      # work 1 , 2  반복
-            work = work % 2
-            rate.sleep()
+            work = work + 1      # work 1 씩 증가    
+            if gohome == 1 :
+                rospy.signal_shutdown("Mission complete.")
 
 def status_subscriber():
     rospy.Subscriber("/move_base/status", GoalStatusArray, status_callback)
@@ -39,18 +34,20 @@ if __name__ == "__main__":
     try:
         rospy.init_node("SRL_targetpoint")
         goal_publisher = rospy.Publisher("/move_base_simple/goal", PoseStamped, queue_size=1)
-        rospy.Subscriber("/odom", Odometry, odom_callback)
+        status_subscriber()
 
         rate = rospy.Rate(1)  # 1Hz, adjust the rate as needed
         if work == 0:
             # 첫 번째 동작 목표 위치로 이동
             move_turtlebot3_to_goal(-0.34728726744651794 ,1.197120189666748)
-        elif work == 1:
+        elif work > 100:
             # 두 번째 동작 초기 위치로 이동
             move_turtlebot3_to_goal(0, 0)
+            gohome = 1
+
 
         rate.sleep()
-        status_subscriber()
+        
         
         
     except rospy.ROSInterruptException:
