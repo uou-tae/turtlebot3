@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 import rospy
 import time
 from actionlib_msgs.msg import GoalStatusArray
@@ -27,7 +26,8 @@ def check_status(event):
             goal += 1
             work = 0
             print(f"goal: {goal}")
-            playsound(audio1)
+            if goal == 1:
+                playsound(audio1)
 
         if status.status == 1:
             print("working")
@@ -35,7 +35,8 @@ def check_status(event):
             goal = 0
             work += 1
             print(f"work: {work}")
-            playsound(audio)
+            if work > 2 :
+                playsound(audio)
 
 
 def status_subscriber():
@@ -45,7 +46,7 @@ if __name__ == '__main__':
     try:
         rospy.init_node('ros_timer')
         status_subscriber()
-        rospy.Timer(rospy.Duration(3), check_status)
+        rospy.Timer(rospy.Duration(1), check_status)
         rospy.spin()
 
     except rospy.ROSInterruptException:
