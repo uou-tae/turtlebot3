@@ -27,8 +27,9 @@ def status_callback(msg):
         if status.status == 3  :  # status가 3인 경우  goal reachead 인상태
             work = work + 1      # work 1 씩 증가    
             print(work)
-            if work > 100 :
+            if work > 50 :
                 move_turtlebot3_to_goal(0, 0)  # 첫 번째 실행후 0,0에서 status가 3으로 남아있어서 
+                rate.sleep()
 
 def status_subscriber():
     rospy.Subscriber("/move_base/status", GoalStatusArray, status_callback)
@@ -37,7 +38,12 @@ if __name__ == "__main__":
     try:
         rospy.init_node("SRL_targetpoint")
         goal_publisher = rospy.Publisher("/move_base_simple/goal", PoseStamped, queue_size=1)
-        move_turtlebot3_to_goal(-0.34728726744651794 ,1.197120189666748)
+        rospy.sleep(1)  # Publisher가 초기화될 때까지 대기
+        rate = rospy.Rate(1)  # 1Hz, adjust the rate as needed
+        move_turtlebot3_to_goal(0.9309288859367371 ,-1.141640067100525)
+        rate.sleep()
+        print("fitst move goal")
+
         time.sleep(1) # 첫 번째 동작이후 status가 3이 남아 있다면 도착한걸로 인식하기에 로봇을 보내고 1초 기다림
         status_subscriber()
         rospy.spin()
