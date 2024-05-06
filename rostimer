@@ -26,7 +26,7 @@ def check_status(event):
             goal += 1
             work = 0
             print(f"goal: {goal}")
-            if goal == 1: # goal이 1이면 즉 도착하면 도착하였습니다.
+            if goal == 4: # goal이 1이면 즉 도착하면 도착하였습니다.
                 playsound(audio1)
 
         if status.status == 1:
