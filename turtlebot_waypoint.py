@@ -75,7 +75,7 @@ def odom_callback(msg):
     goal_distance_y = goal[i][1] - current_y
 
     result = calculate_rms(goal_distance_x, goal_distance_y)
-    if (i != 4):
+    if (i != 3):
         if result < 0.1 :
             x = 1
             i = i + 1
