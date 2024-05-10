@@ -18,14 +18,14 @@ goal = [[0,0],
         [0.7, -0.6], 
         [0.99, -0.04], 
         [0,0]]
-Quaternion = [(0.0, 0.0, 0.0, 0.1),
-              Quaternion(0.0, 0.0,  0.6619901061058044, -0.7495126128196716),
-              Quaternion(0.0, 0.0, 0.6376864314079285, -0.770296037197113), 
-              Quaternion(0.0, 0.0, 0.21, 0.97), 
-              Quaternion(0.0, 0.0, -0.0145773496478796, 0.9998937249183655), 
-              Quaternion(0.0, 0.0, 0.7960116267204285,-0.6052812933921814),
-              Quaternion(0.0, 0.0, 0.025252757593989372, 0.9996811151504517),
-              Quaternion(0.0, 0.0, 0.2, 0.1)]
+quaternions = [(0.0, 0.0, 0.0, 0.1),
+            Quaternion(0.0, 0.0,  0.6619901061058044, -0.7495126128196716),
+            Quaternion(0.0, 0.0, 0.6376864314079285, -0.770296037197113), 
+            Quaternion(0.0, 0.0, 0.21, 0.97), 
+            Quaternion(0.0, 0.0, -0.0145773496478796, 0.9998937249183655), 
+            Quaternion(0.0, 0.0, 0.7960116267204285,-0.6052812933921814),
+            Quaternion(0.0, 0.0, 0.025252757593989372, 0.9996811151504517),
+            Quaternion(0.0, 0.0, 0.2, 0.1)]
 
 def calculate_rms(x,y):    
     rms = math.sqrt(x**2 + y**2)
@@ -52,7 +52,7 @@ def status_callback(msg):
             print(work)
             if work > 30 :
                 i=i+1
-                move_turtlebot3_to_goal(goal[i][0], goal[i][1], Quaternion[i])  # 첫 번째 실행후 0,0에서 status가 3으로 남아있어서
+                move_turtlebot3_to_goal(goal[i][0], goal[i][1], quaternions[i])  # 첫 번째 실행후 0,0에서 status가 3으로 남아있어서
                 rate.sleep()
                 work = 0
 
@@ -70,9 +70,8 @@ def odom_callback(msg):
     result = calculate_rms(goal_distance_x, goal_distance_y)
     if (i != 3):
         if result < 0.1 :
-            x = 1
             i = i + 1
-            move_turtlebot3_to_goal(goal[i][0] ,goal[i][1], Quaternion[i])
+            move_turtlebot3_to_goal(goal[i][0] ,goal[i][1], quaternions[i])
             rate.sleep()
             time.sleep(1) # 첫 번째 동작이후 status가 3이 남아 있다면 도착한걸로 인식하기에 로봇을 보내고 1초 기다림
                 
