@@ -32,7 +32,7 @@ def calculate_rms(x,y):
     squared_values = [x ** 2 , y ** 2]
     
     # 제곱 평균을 계산합니다.
-    mean_of_squares = sum(squared_values) / 2
+    mean_of_squares = sum(squared_values)
     
     # 제곱근을 계산하여 반환합니다.
     rms = math.sqrt(mean_of_squares)
