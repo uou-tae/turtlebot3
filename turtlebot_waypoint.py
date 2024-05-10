@@ -28,14 +28,7 @@ Quaternion = [(0.0, 0.0, 0.0, 0.1),
               Quaternion(0.0, 0.0, 0.2, 0.1)]
 
 def calculate_rms(x,y):    
-    # 각 요소의 제곱을 계산합니다.
-    squared_values = [x ** 2 , y ** 2]
-    
-    # 제곱 평균을 계산합니다.
-    mean_of_squares = sum(squared_values)
-    
-    # 제곱근을 계산하여 반환합니다.
-    rms = math.sqrt(mean_of_squares)
+    rms = math.sqrt(x**2 + y**2)
     return rms
 
 def move_turtlebot3_to_goal(x, y, z):
