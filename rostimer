@@ -21,12 +21,11 @@ def check_status(event):
     msg = rospy.wait_for_message("/move_base/status", GoalStatusArray)
     for status in msg.status_list:
         if status.status == 3:  # status가 3인 경우
-            print("goal reached")
+            # print("goal reached")
             print("Status: ", status.status)
             goal += 1
-            work = 0
             print(f"goal: {goal}")
-            if goal == 4: # goal이 1이면 즉 도착하면 도착하였습니다.
+            if goal == 3: # goal이 1이면 즉 도착하면 도착하였습니다.
                 playsound(audio1)
 
         if status.status == 1:
@@ -35,7 +34,7 @@ def check_status(event):
             goal = 0
             work += 1
             print(f"work: {work}")
-            if work > 2 : # work 가 3번 이상 즉 3초 유지되면 주행중입니다
+            if work > 3 : # work 가 3번 이상 즉 3초 유지되면 주행중입니다
                 playsound(audio)
                 work = 0
 
